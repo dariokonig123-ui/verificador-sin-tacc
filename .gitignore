@@ -1,0 +1,6 @@
+
+node_modules/
+cliente/node_modules/
+credenciales.json
+listado-anmat.xlsx
+.env
