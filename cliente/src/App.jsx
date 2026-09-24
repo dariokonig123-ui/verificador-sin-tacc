@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const API = 'http://localhost:3001'
+const API = 'https://verificador-sin-tacc.onrender.com'
 
 export default function App() {
   const [rnpa, setRnpa] = useState('')
