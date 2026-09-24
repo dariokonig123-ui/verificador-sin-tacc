@@ -8,9 +8,8 @@ app.use(express.json());
 
 // ─── CONFIGURACIÓN ───────────────────────────────────────────
 const SHEET_ID = '1Ybf3cnVU6GkGk4pZcCFXut5hWuTVpHVD_gj-MBFmzY8';
-const CREDENTIALS_PATH = './credenciales.json';
 const HOJA_NOMBRE = 'Hoja 1';
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 // ─────────────────────────────────────────────────────────────
 
 let cache = [];      // productos en memoria
