@@ -19,8 +19,9 @@ const normalizar = (str) => (str || '').replace(/[-\/\s]/g, '').toLowerCase();
 
 async function cargarCache() {
   console.log('📥 Cargando listado desde Google Sheets...');
+  const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
   const auth = new google.auth.GoogleAuth({
-    keyFile: CREDENTIALS_PATH,
+    credentials,
     scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
   });
   const sheets = google.sheets({ version: 'v4', auth });
