@@ -105,7 +105,7 @@ export default function App() {
 
       console.log('OCR detectó:', text)
 
-      const match = text.match(/R\.?\s*N\.?\s*P\.?\s*A\.?\s*[:\s]*([0-9/\-]+)/i)
+      const match = text.match(/R\.?\s*N\.?\s*P\.?\s*A\.?\s*N?[º°]?\s*[:\s]*([0-9/\-]+)/i)
 
       if (match) {
         const rnpaEncontrado = match[1].trim()
