@@ -11,6 +11,7 @@ export default function App() {
   const [modoCamera, setModoCamera] = useState(false)
   const [procesandoOCR, setProcesandoOCR] = useState(false)
   const [rnpaDetectado, setRnpaDetectado] = useState(null)
+  const [textoOCR, setTextoOCR] = useState('')
 
   const videoRef = useRef(null)
   const streamRef = useRef(null)
@@ -104,6 +105,7 @@ export default function App() {
       await worker.terminate()
 
       console.log('OCR detectó:', text)
+      setTextoOCR(text) // mostrar en pantalla para debug
 
       const match = text.match(/R\.?\s*N\.?\s*P\.?\s*A\.?\s*N?[º°]?\s*[:\s]*([0-9/\-]+)/i)
 
@@ -156,6 +158,12 @@ export default function App() {
                 <p style={styles.guiaTexto}>Alineá el RNPA dentro del recuadro</p>
               </div>
             </div>
+
+            {textoOCR ? (
+              <div style={styles.avisoOCR}>
+                <strong>Texto detectado:</strong><br />{textoOCR}
+              </div>
+            ) : null}
 
             {rnpaDetectado === 'NO_ENCONTRADO' && (
               <div style={styles.avisoOCR}>
