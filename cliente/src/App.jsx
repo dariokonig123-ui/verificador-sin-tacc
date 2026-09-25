@@ -44,14 +44,14 @@ export default function App() {
       const constraints = {
         video: {
           facingMode: { ideal: 'environment' },
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+          focusMode: { ideal: 'continuous' }
         }
       }
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
       setModoCamera(true)
       setRnpaDetectado(null)
-      // Esperar a que el video esté montado
       setTimeout(() => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream
@@ -76,18 +76,35 @@ export default function App() {
     setRnpaDetectado(null)
 
     try {
-      // Capturar frame del video
+      const video = videoRef.current
+      const vw = video.videoWidth
+      const vh = video.videoHeight
+
+      // Zona guía: franja horizontal centrada (60% ancho, 20% alto)
+      const rx = vw * 0.1
+      const ry = vh * 0.4
+      const rw = vw * 0.8
+      const rh = vh * 0.2
+
+      // Recortar solo esa zona y escalar x2 para mejor OCR
+      const scale = 2
       const canvas = document.createElement('canvas')
-      canvas.width = videoRef.current.videoWidth
-      canvas.height = videoRef.current.videoHeight
-      canvas.getContext('2d').drawImage(videoRef.current, 0, 0)
+      canvas.width = rw * scale
+      canvas.height = rh * scale
+      const ctx = canvas.getContext('2d')
+
+      // Escalar y aumentar contraste
+      ctx.filter = 'contrast(1.8) brightness(1.1) grayscale(1)'
+      ctx.drawImage(video, rx, ry, rw, rh, 0, 0, rw * scale, rh * scale)
 
       // OCR con Tesseract
       const worker = await createWorker('spa')
+      await worker.setParameters({ tessedit_char_whitelist: 'RNPA0123456789.:-/ ' })
       const { data: { text } } = await worker.recognize(canvas)
       await worker.terminate()
 
-      // Buscar patrón RNPA en el texto
+      console.log('OCR detectó:', text)
+
       const match = text.match(/R\.?\s*N\.?\s*P\.?\s*A\.?\s*[:\s]*([0-9/\-]+)/i)
 
       if (match) {
@@ -99,6 +116,7 @@ export default function App() {
         setRnpaDetectado('NO_ENCONTRADO')
       }
     } catch (e) {
+      console.error(e)
       setError('Error al procesar la imagen.')
     }
 
@@ -125,12 +143,19 @@ export default function App() {
         {/* Modo cámara */}
         {modoCamera ? (
           <div>
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              style={styles.video}
-            />
+            <div style={styles.videoWrapper}>
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                style={styles.video}
+              />
+              {/* Guía visual */}
+              <div style={styles.guia}>
+                <div style={styles.guiaRect} />
+                <p style={styles.guiaTexto}>Alineá el RNPA dentro del recuadro</p>
+              </div>
+            </div>
 
             {rnpaDetectado === 'NO_ENCONTRADO' && (
               <div style={styles.avisoOCR}>
