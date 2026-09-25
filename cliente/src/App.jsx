@@ -307,7 +307,25 @@ const styles = {
     background: '#2563eb', color: 'white', border: 'none',
     borderRadius: '10px', cursor: 'pointer',
   },
-  video: { width: '100%', borderRadius: '12px', marginBottom: '12px' },
+  videoWrapper: { position: 'relative', marginBottom: '12px' },
+  video: { width: '100%', borderRadius: '12px', display: 'block' },
+  guia: {
+    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+    display: 'flex', flexDirection: 'column',
+    alignItems: 'center', justifyContent: 'center',
+    pointerEvents: 'none',
+  },
+  guiaRect: {
+    width: '80%', height: '20%',
+    border: '3px solid #facc15',
+    borderRadius: '8px',
+    boxShadow: '0 0 0 2000px rgba(0,0,0,0.45)',
+  },
+  guiaTexto: {
+    color: '#facc15', fontSize: '13px', fontWeight: '600',
+    marginTop: '10px', textAlign: 'center',
+    textShadow: '0 1px 3px rgba(0,0,0,0.8)',
+  },
   procesando: { textAlign: 'center', padding: '12px', color: '#6b7280', fontSize: '15px' },
   avisoOCR: {
     background: '#fef3c7', border: '1px solid #fde68a',
