@@ -41,15 +41,27 @@ export default function App() {
   // ── CÁMARA ──────────────────────────────────────────────────
   const abrirCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }
-      })
-      videoRef.current.srcObject = stream
-      streamRef.current = stream
+      const constraints = {
+        video: {
+          facingMode: { ideal: 'environment' },
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
+      }
+      const stream = await navigator.mediaDevices.getUserMedia(constraints)
       setModoCamera(true)
       setRnpaDetectado(null)
-    } catch {
-      setError('No se pudo acceder a la cámara.')
+      // Esperar a que el video esté montado
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream
+          videoRef.current.play().catch(() => {})
+        }
+        streamRef.current = stream
+      }, 300)
+    } catch (e) {
+      console.error('Error cámara:', e)
+      setError(`No se pudo acceder a la cámara: ${e.message}`)
     }
   }
 
