@@ -159,12 +159,6 @@ export default function App() {
               </div>
             </div>
 
-            {textoOCR ? (
-              <div style={styles.avisoOCR}>
-                <strong>Texto detectado:</strong><br />{textoOCR}
-              </div>
-            ) : null}
-
             {rnpaDetectado === 'NO_ENCONTRADO' && (
               <div style={styles.avisoOCR}>
                 ⚠️ No se detectó ningún RNPA. Intentá de nuevo o ingresalo manualmente.
@@ -194,6 +188,7 @@ export default function App() {
                 placeholder="Ingresá el número de RNPA"
                 value={rnpa}
                 onChange={e => setRnpa(e.target.value)}
+                onFocus={() => { setResultado(null); setError(null); setRnpaDetectado(null) }}
                 onKeyDown={handleKey}
               />
               <button
@@ -203,7 +198,7 @@ export default function App() {
               >
                 {cargando ? 'Buscando...' : 'Verificar'}
               </button>
-              <button onClick={abrirCamera} style={styles.botonCamera}>
+              <button               onClick={() => { setResultado(null); setError(null); setRnpaDetectado(null); abrirCamera() }} style={styles.botonCamera}>
                 📷 Escanear con cámara
               </button>
             </div>
@@ -271,7 +266,8 @@ export default function App() {
 
         {/* Footer */}
         <p style={styles.footer}>
-          Datos oficiales ANMAT · Actualizado 22/09/2026
+          Datos oficiales ANMAT · Actualizado 22/09/2026<br />
+          <span style={{fontSize:'10px', color:'#e5e7eb'}}>3HK división software</span>
         </p>
       </div>
     </div>
