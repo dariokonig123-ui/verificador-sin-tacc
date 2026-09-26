@@ -265,7 +265,7 @@ export default function App() {
 
         {/* Footer */}
         <p style={styles.footer}>
-          Datos oficiales ANMAT · Actualizado 22/09/2026<br />
+          Datos oficiales ANMAT · Actualizado 26/09/2026<br />
           <span style={{fontSize:'10px', color:'#9ca3af'}}>3HK división software</span>
         </p>
       </div>
