@@ -16,7 +16,16 @@ export default function App() {
   const videoRef = useRef(null)
   const streamRef = useRef(null)
 
-  const buscar = async (rnpaABuscar) => {
+  const teclear = (val) => setRnpa(prev => prev + val)
+  const borrar = () => setRnpa(prev => prev.slice(0, -1))
+  const limpiar = () => { setRnpa(''); setResultado(null); setError(null); setRnpaDetectado(null) }
+
+  const teclado = [
+    ['1','2','3'],
+    ['4','5','6'],
+    ['7','8','9'],
+    ['-','0','/'],
+  ]
     const rnpaLimpio = (rnpaABuscar || rnpa).trim()
     if (!rnpaLimpio) return
 
@@ -264,10 +273,21 @@ export default function App() {
           )
         )}
 
+        {/* Cafecito */}
+        <div style={{textAlign:'center', margin:'16px 0 8px 0'}}>
+          <a href='https://cafecito.app/el_yo_ella' rel='noopener' target='_blank'>
+            <img
+              srcSet='https://cdn.cafecito.app/imgs/buttons/button_1.png 1x, https://cdn.cafecito.app/imgs/buttons/button_1_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_1_3.75x.png 3.75x'
+              src='https://cdn.cafecito.app/imgs/buttons/button_1.png'
+              alt='Invitame un café en cafecito.app'
+            />
+          </a>
+        </div>
+
         {/* Footer */}
         <p style={styles.footer}>
           Datos oficiales ANMAT · Actualizado 22/09/2026<br />
-          <span style={{fontSize:'10px', color:'#e5e7eb'}}>3HK división software</span>
+          <span style={{fontSize:'10px', color:'#9ca3af'}}>3HK división software</span>
         </p>
       </div>
     </div>
@@ -296,15 +316,32 @@ const styles = {
   icono: { fontSize: '48px', marginBottom: '8px' },
   titulo: { fontSize: '26px', fontWeight: '700', color: '#15803d', margin: '0 0 6px 0' },
   subtitulo: { fontSize: '14px', color: '#6b7280', margin: 0 },
-  buscador: { display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' },
-  input: {
-    padding: '14px 16px', fontSize: '16px',
-    border: '2px solid #d1fae5', borderRadius: '10px', outline: 'none',
+  display: {
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    background: '#f9fafb', border: '2px solid #d1fae5',
+    borderRadius: '12px', padding: '14px 16px', marginBottom: '12px', minHeight: '52px',
   },
-  boton: {
-    padding: '14px', fontSize: '16px', fontWeight: '600',
-    background: '#16a34a', color: 'white', border: 'none',
-    borderRadius: '10px', cursor: 'pointer',
+  displayTexto: { fontSize: '22px', fontFamily: 'monospace', color: '#111827', letterSpacing: '2px' },
+  displayLimpiar: {
+    background: 'none', border: 'none', color: '#9ca3af',
+    fontSize: '18px', cursor: 'pointer', padding: '0 4px',
+  },
+  teclado: { marginBottom: '12px' },
+  fila: { display: 'flex', gap: '8px', marginBottom: '8px' },
+  tecla: {
+    flex: 1, padding: '16px', fontSize: '22px', fontWeight: '600',
+    background: '#f3f4f6', border: '1px solid #e5e7eb',
+    borderRadius: '10px', cursor: 'pointer', color: '#111827',
+  },
+  teclaVerificar: {
+    flex: 1, padding: '16px', fontSize: '24px', fontWeight: '700',
+    background: '#16a34a', border: 'none',
+    borderRadius: '10px', cursor: 'pointer', color: 'white',
+  },
+  teclaBorrar: {
+    flex: 1, padding: '16px', fontSize: '20px', fontWeight: '600',
+    background: '#fee2e2', border: '1px solid #fecaca',
+    borderRadius: '10px', cursor: 'pointer', color: '#dc2626',
   },
   botonCamera: {
     padding: '14px', fontSize: '15px', fontWeight: '600',
@@ -391,5 +428,5 @@ const styles = {
   noAptoBadge: { fontSize: '15px', fontWeight: '700', color: '#be123c', marginBottom: '12px', letterSpacing: '0.5px' },
   noAptoTexto: { fontSize: '14px', color: '#374151', margin: '0 0 8px 0' },
   noAptoSub: { fontSize: '12px', color: '#9ca3af', margin: 0 },
-  footer: { textAlign: 'center', fontSize: '11px', color: '#d1d5db', marginTop: '20px', marginBottom: 0 },
+  footer: { textAlign: 'center', fontSize: '11px', color: '#6b7280', marginTop: '20px', marginBottom: 0 },
 }
