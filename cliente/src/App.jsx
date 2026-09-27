@@ -18,6 +18,7 @@ export default function App() {
   const [modoCamera, setModoCamera] = useState(false)
   const [procesandoOCR, setProcesandoOCR] = useState(false)
   const [rnpaDetectado, setRnpaDetectado] = useState(null)
+  const [despertando, setDespertando] = useState(false)
 
   const videoRef = useRef(null)
   const streamRef = useRef(null)
@@ -40,6 +41,8 @@ export default function App() {
     setResultado(null)
     setError(null)
 
+    const timer = setTimeout(() => setDespertando(true), 2000)
+
     try {
       const res = await fetch(`${API}/buscar?rnpa=${encodeURIComponent(rnpaLimpio)}`)
       if (!res.ok) throw new Error('Error en el servidor')
@@ -48,6 +51,8 @@ export default function App() {
     } catch (e) {
       setError('No se pudo conectar con el servidor. Verificá que esté corriendo.')
     }
+    clearTimeout(timer)
+    setDespertando(false)
     setCargando(false)
   }
 
@@ -213,6 +218,13 @@ export default function App() {
           </>
         )}
 
+        {/* Servidor durmiendo */}
+        {despertando && (
+          <div style={styles.despertando}>
+            ☕ Despertando el servidor, aguantá un momento...
+          </div>
+        )}
+
         {/* Error */}
         {error && <div style={styles.errorConexion}>⚠️ {error}</div>}
 
@@ -265,7 +277,7 @@ export default function App() {
 
         {/* Footer */}
         <p style={styles.footer}>
-          Datos oficiales ANMAT · Actualizado 26/09/2026<br />
+          Datos oficiales ANMAT · Actualizado 22/09/2026<br />
           <span style={{fontSize:'10px', color:'#9ca3af'}}>3HK división software</span>
         </p>
       </div>
@@ -369,7 +381,12 @@ const styles = {
     background: '#e5e7eb', color: '#374151', border: 'none',
     borderRadius: '10px', cursor: 'pointer',
   },
-  errorConexion: {
+  despertando: {
+    background: '#eff6ff', border: '1px solid #bfdbfe',
+    borderRadius: '10px', padding: '12px 16px',
+    fontSize: '14px', color: '#1e40af', marginBottom: '16px',
+    textAlign: 'center',
+  },
     background: '#fef3c7', border: '1px solid #fde68a',
     borderRadius: '10px', padding: '12px 16px',
     fontSize: '14px', color: '#92400e', marginBottom: '16px',
