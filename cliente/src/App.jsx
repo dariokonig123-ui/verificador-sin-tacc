@@ -3,13 +3,6 @@ import { createWorker } from 'tesseract.js'
 
 const API = 'https://verificador-sin-tacc.onrender.com'
 
-const teclado = [
-  ['1','2','3'],
-  ['4','5','6'],
-  ['7','8','9'],
-  ['-','0','/'],
-]
-
 export default function App() {
   const [rnpa, setRnpa] = useState('')
   const [resultado, setResultado] = useState(null)
@@ -29,9 +22,6 @@ export default function App() {
     setError(null)
     setRnpaDetectado(null)
   }
-
-  const teclear = (val) => setRnpa(prev => prev + val)
-  const borrar = () => setRnpa(prev => prev.slice(0, -1))
 
   const buscar = async (rnpaABuscar) => {
     const rnpaLimpio = (rnpaABuscar || rnpa).trim()
@@ -56,7 +46,6 @@ export default function App() {
     setCargando(false)
   }
 
-  // ── CÁMARA ──────────────────────────────────────────────────
   const abrirCamera = async () => {
     setResultado(null)
     setError(null)
@@ -133,7 +122,6 @@ export default function App() {
     buscar(rnpa)
   }
 
-  // ── RENDER ──────────────────────────────────────────────────
   return (
     <div style={styles.pagina}>
       <div style={styles.tarjeta}>
@@ -272,9 +260,10 @@ export default function App() {
 
         {/* Footer */}
         <p style={styles.footer}>
-          Datos oficiales ANMAT · Actualizado 22/09/2026<br />
+          Datos oficiales ANMAT · Actualizado 27/09/2026<br />
           <span style={{fontSize:'10px', color:'#9ca3af'}}>3HK división software</span>
         </p>
+
       </div>
     </div>
   )
@@ -294,14 +283,13 @@ const styles = {
   header: { textAlign: 'center', marginBottom: '28px' },
   icono: { fontSize: '48px', marginBottom: '8px' },
   titulo: { fontSize: '26px', fontWeight: '700', color: '#15803d', margin: '0 0 6px 0' },
-  subtitulo: { fontSize: '14px', color: '#6b7280', margin: 0 },
+  subtitulo: { fontSize: '14px', color: '#6b7280', margin: '0 0 20px 0' },
   input: {
     width: '100%', padding: '16px', fontSize: '24px',
     fontFamily: 'monospace', letterSpacing: '2px',
     border: '2px solid #d1fae5', borderRadius: '12px',
     outline: 'none', boxSizing: 'border-box',
-    marginBottom: '10px', textAlign: 'center',
-    color: '#111827',
+    marginBottom: '10px', textAlign: 'center', color: '#111827',
   },
   botonVerificar: {
     width: '100%', padding: '16px', fontSize: '18px', fontWeight: '700',
@@ -365,8 +353,8 @@ const styles = {
   despertando: {
     background: '#eff6ff', border: '1px solid #bfdbfe',
     borderRadius: '10px', padding: '12px 16px',
-    fontSize: '14px', color: '#1e40af', marginBottom: '16px',
-    textAlign: 'center',
+    fontSize: '14px', color: '#1e40af', marginBottom: '16px', textAlign: 'center',
+  },
   errorConexion: {
     background: '#fef3c7', border: '1px solid #fde68a',
     borderRadius: '10px', padding: '12px 16px',
