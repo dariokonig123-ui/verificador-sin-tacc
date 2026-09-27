@@ -173,31 +173,26 @@ export default function App() {
           </div>
         ) : (
           <>
-            {/* Display RNPA */}
-            <div style={styles.display}>
-              <span style={styles.displayTexto}>
-                {rnpa || <span style={{color:'#d1d5db'}}>Ingresá el RNPA</span>}
-              </span>
-              {rnpa && <button onClick={limpiar} style={styles.displayLimpiar}>✕</button>}
-            </div>
+            {/* Input RNPA */}
+            <input
+              style={styles.input}
+              type="text"
+              inputMode="numeric"
+              placeholder="Ingresá el RNPA"
+              value={rnpa}
+              onChange={e => setRnpa(e.target.value)}
+              onFocus={() => { setResultado(null); setError(null); setRnpaDetectado(null) }}
+              onKeyDown={e => e.key === 'Enter' && buscar()}
+            />
 
-            {/* Teclado numérico */}
-            <div style={styles.teclado}>
-              {teclado.map((fila, i) => (
-                <div key={i} style={styles.fila}>
-                  {fila.map(key => (
-                    <button key={key} onClick={() => teclear(key)} style={styles.tecla}>{key}</button>
-                  ))}
-                </div>
-              ))}
-              <div style={styles.fila}>
-                <button onClick={() => teclear('.')} style={styles.tecla}>.</button>
-                <button onClick={() => buscar()} disabled={cargando} style={{...styles.teclaVerificar, opacity: cargando ? 0.7 : 1}}>
-                  {cargando ? '...' : '✓'}
-                </button>
-                <button onClick={borrar} style={styles.teclaBorrar}>⌫</button>
-              </div>
-            </div>
+            {/* Botón verificar */}
+            <button
+              onClick={() => buscar()}
+              disabled={cargando}
+              style={{...styles.botonVerificar, opacity: cargando ? 0.7 : 1}}
+            >
+              {cargando ? 'Buscando...' : '✓ Verificar'}
+            </button>
 
             {/* Botón cámara */}
             <button onClick={abrirCamera} style={styles.botonCamera}>
@@ -300,32 +295,18 @@ const styles = {
   icono: { fontSize: '48px', marginBottom: '8px' },
   titulo: { fontSize: '26px', fontWeight: '700', color: '#15803d', margin: '0 0 6px 0' },
   subtitulo: { fontSize: '14px', color: '#6b7280', margin: 0 },
-  display: {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    background: '#f9fafb', border: '2px solid #d1fae5',
-    borderRadius: '12px', padding: '14px 16px', marginBottom: '12px', minHeight: '52px',
+  input: {
+    width: '100%', padding: '16px', fontSize: '24px',
+    fontFamily: 'monospace', letterSpacing: '2px',
+    border: '2px solid #d1fae5', borderRadius: '12px',
+    outline: 'none', boxSizing: 'border-box',
+    marginBottom: '10px', textAlign: 'center',
+    color: '#111827',
   },
-  displayTexto: { fontSize: '22px', fontFamily: 'monospace', color: '#111827', letterSpacing: '2px' },
-  displayLimpiar: {
-    background: 'none', border: 'none', color: '#9ca3af',
-    fontSize: '18px', cursor: 'pointer', padding: '0 4px',
-  },
-  teclado: { marginBottom: '12px' },
-  fila: { display: 'flex', gap: '8px', marginBottom: '8px' },
-  tecla: {
-    flex: 1, padding: '16px', fontSize: '22px', fontWeight: '600',
-    background: '#f3f4f6', border: '1px solid #e5e7eb',
-    borderRadius: '10px', cursor: 'pointer', color: '#111827',
-  },
-  teclaVerificar: {
-    flex: 1, padding: '16px', fontSize: '24px', fontWeight: '700',
-    background: '#16a34a', border: 'none',
-    borderRadius: '10px', cursor: 'pointer', color: 'white',
-  },
-  teclaBorrar: {
-    flex: 1, padding: '16px', fontSize: '20px', fontWeight: '600',
-    background: '#fee2e2', border: '1px solid #fecaca',
-    borderRadius: '10px', cursor: 'pointer', color: '#dc2626',
+  botonVerificar: {
+    width: '100%', padding: '16px', fontSize: '18px', fontWeight: '700',
+    background: '#16a34a', color: 'white', border: 'none',
+    borderRadius: '12px', cursor: 'pointer', marginBottom: '10px',
   },
   botonCamera: {
     width: '100%', padding: '14px', fontSize: '15px', fontWeight: '600',
