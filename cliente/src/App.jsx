@@ -16,13 +16,6 @@ export default function App() {
   const videoRef = useRef(null)
   const streamRef = useRef(null)
 
-  const limpiar = () => {
-    setRnpa('')
-    setResultado(null)
-    setError(null)
-    setRnpaDetectado(null)
-  }
-
   const buscar = async (rnpaABuscar) => {
     const rnpaLimpio = (rnpaABuscar || rnpa).trim()
     if (!rnpaLimpio) return
@@ -85,10 +78,7 @@ export default function App() {
       const video = videoRef.current
       const vw = video.videoWidth
       const vh = video.videoHeight
-      const rx = vw * 0.1
-      const ry = vh * 0.4
-      const rw = vw * 0.8
-      const rh = vh * 0.2
+      const rx = vw * 0.1, ry = vh * 0.4, rw = vw * 0.8, rh = vh * 0.2
       const scale = 2
       const canvas = document.createElement('canvas')
       canvas.width = rw * scale
@@ -96,12 +86,10 @@ export default function App() {
       const ctx = canvas.getContext('2d')
       ctx.filter = 'contrast(1.8) brightness(1.1) grayscale(1)'
       ctx.drawImage(video, rx, ry, rw, rh, 0, 0, rw * scale, rh * scale)
-
       const worker = await createWorker('spa')
       await worker.setParameters({ tessedit_char_whitelist: 'RNPA0123456789.:-/ ' })
       const { data: { text } } = await worker.recognize(canvas)
       await worker.terminate()
-
       const match = text.match(/R\.?\s*N\.?\s*P\.?\s*A\.?\s*N?[º°]?\s*[:\s]*([0-9/\-]+)/i)
       if (match) {
         const rnpaEncontrado = match[1].trim()
@@ -143,13 +131,11 @@ export default function App() {
                 <p style={styles.guiaTexto}>Alineá el RNPA dentro del recuadro</p>
               </div>
             </div>
-
             {rnpaDetectado === 'NO_ENCONTRADO' && (
               <div style={styles.avisoOCR}>
                 ⚠️ No se detectó ningún RNPA. Intentá de nuevo o ingresalo manualmente.
               </div>
             )}
-
             {procesandoOCR ? (
               <div style={styles.procesando}>🔍 Leyendo texto...</div>
             ) : (
@@ -161,7 +147,6 @@ export default function App() {
           </div>
         ) : (
           <>
-            {/* Input RNPA */}
             <input
               style={styles.input}
               type="text"
@@ -172,8 +157,6 @@ export default function App() {
               onFocus={() => { setResultado(null); setError(null); setRnpaDetectado(null) }}
               onKeyDown={e => e.key === 'Enter' && buscar()}
             />
-
-            {/* Botón verificar */}
             <button
               onClick={() => buscar()}
               disabled={cargando}
@@ -181,13 +164,9 @@ export default function App() {
             >
               {cargando ? 'Buscando...' : '✓ Verificar'}
             </button>
-
-            {/* Botón cámara */}
             <button onClick={abrirCamera} style={styles.botonCamera}>
               📷 Escanear con cámara
             </button>
-
-            {/* Confirmación RNPA detectado */}
             {rnpaDetectado && rnpaDetectado !== 'NO_ENCONTRADO' && (
               <div style={styles.confirmacion}>
                 <p style={styles.confirmacionTexto}>¿Es correcto este RNPA?</p>
@@ -201,17 +180,14 @@ export default function App() {
           </>
         )}
 
-        {/* Servidor durmiendo */}
         {despertando && (
           <div style={styles.despertando}>
             ☕ Despertando el servidor, aguantá un momento...
           </div>
         )}
 
-        {/* Error */}
         {error && <div style={styles.errorConexion}>⚠️ {error}</div>}
 
-        {/* Resultado */}
         {resultado && (
           resultado.encontrado ? (
             <div style={styles.apto}>
@@ -241,7 +217,7 @@ export default function App() {
                 Este RNPA no figura en el listado oficial de productos Sin TACC de ANMAT.
               </p>
               <p style={styles.noAptoSub}>
-                Verificá que el código sea correcto o consultá con el fabricante.
+                El producto puede estar registrado en <strong>ACELA</strong> (Asociación Celíaca Argentina), pero esta app verifica únicamente los productos certificados por <strong>ANMAT</strong>. Consultá directamente con el fabricante.
               </p>
             </div>
           )
@@ -249,6 +225,9 @@ export default function App() {
 
         {/* Cafecito */}
         <div style={{textAlign:'center', margin:'16px 0 8px 0'}}>
+          <p style={{fontSize:'13px', color:'#6b7280', marginBottom:'10px'}}>
+            Esta app es gratuita y la mantenemos con mucho café ☕ Si te ayudó en el super, convidanos uno 👇
+          </p>
           <a href='https://cafecito.app/el_yo_ella' rel='noopener' target='_blank'>
             <img
               srcSet='https://cdn.cafecito.app/imgs/buttons/button_1.png 1x, https://cdn.cafecito.app/imgs/buttons/button_1_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_1_3.75x.png 3.75x'
@@ -289,7 +268,8 @@ const styles = {
     fontFamily: 'monospace', letterSpacing: '2px',
     border: '2px solid #d1fae5', borderRadius: '12px',
     outline: 'none', boxSizing: 'border-box',
-    marginBottom: '10px', textAlign: 'center', color: '#111827',
+    marginBottom: '10px', textAlign: 'center',
+    color: '#111827', background: 'white',
   },
   botonVerificar: {
     width: '100%', padding: '16px', fontSize: '18px', fontWeight: '700',
@@ -381,6 +361,6 @@ const styles = {
   },
   noAptoBadge: { fontSize: '15px', fontWeight: '700', color: '#be123c', marginBottom: '12px', letterSpacing: '0.5px' },
   noAptoTexto: { fontSize: '14px', color: '#374151', margin: '0 0 8px 0' },
-  noAptoSub: { fontSize: '12px', color: '#9ca3af', margin: 0 },
+  noAptoSub: { fontSize: '12px', color: '#6b7280', margin: 0 },
   footer: { textAlign: 'center', fontSize: '11px', color: '#6b7280', marginTop: '20px', marginBottom: 0 },
 }
