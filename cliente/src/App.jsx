@@ -367,7 +367,7 @@ const styles = {
     borderRadius: '10px', padding: '12px 16px',
     fontSize: '14px', color: '#1e40af', marginBottom: '16px',
     textAlign: 'center',
-  },
+  errorConexion: {
     background: '#fef3c7', border: '1px solid #fde68a',
     borderRadius: '10px', padding: '12px 16px',
     fontSize: '14px', color: '#92400e', marginBottom: '16px',
