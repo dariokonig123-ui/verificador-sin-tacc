@@ -11,7 +11,7 @@ export default function App() {
   const [modoCamera, setModoCamera] = useState(false)
   const [procesandoOCR, setProcesandoOCR] = useState(false)
   const [rnpaDetectado, setRnpaDetectado] = useState(null)
-  const [despertando, setDespertando] = useState(false)
+  const [mostrarAcerca, setMostrarAcerca] = useState(false)
 
   const videoRef = useRef(null)
   const streamRef = useRef(null)
@@ -119,7 +119,43 @@ export default function App() {
           <div style={styles.icono}>🌾</div>
           <h1 style={styles.titulo}>Verificador Sin TACC</h1>
           <p style={styles.subtitulo}>Consultá si un producto está habilitado por ANMAT</p>
+          <button onClick={() => setMostrarAcerca(true)} style={styles.botonInfo}>ℹ️</button>
         </div>
+
+        {/* Modal Acerca de */}
+        {mostrarAcerca && (
+          <div style={styles.modalOverlay} onClick={() => setMostrarAcerca(false)}>
+            <div style={styles.modal} onClick={e => e.stopPropagation()}>
+              <h2 style={styles.modalTitulo}>Acerca de</h2>
+              <p style={styles.modalTexto}>
+                <strong>Verificador Sin TACC</strong> te permite consultar si un alimento está certificado libre de gluten según el listado oficial de ANMAT, escaneando o ingresando el número de RNPA del envase.
+              </p>
+              <div style={styles.modalFila}>
+                <span style={styles.modalLabel}>Desarrollado por</span>
+                <span style={styles.modalValor}>3HK división software</span>
+              </div>
+              <div style={styles.modalFila}>
+                <span style={styles.modalLabel}>Fuente de datos</span>
+                <a href="https://listadoalg.anmat.gob.ar/Home" target="_blank" rel="noopener" style={styles.modalLink}>
+                  ANMAT oficial
+                </a>
+              </div>
+              <div style={styles.modalFila}>
+                <span style={styles.modalLabel}>Contacto</span>
+                <a href="https://www.facebook.com/AlimentosSinGlutenArgentina" target="_blank" rel="noopener" style={styles.modalLink}>
+                  Facebook
+                </a>
+              </div>
+              <div style={styles.modalFila}>
+                <span style={styles.modalLabel}>Versión</span>
+                <span style={styles.modalValor}>v1.0</span>
+              </div>
+              <button onClick={() => setMostrarAcerca(false)} style={styles.modalCerrar}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Modo cámara */}
         {modoCamera ? (
@@ -209,6 +245,14 @@ export default function App() {
                 <span style={styles.valor}>{resultado.producto.estado || '—'}</span>
               </div>
               <div style={styles.rnpaChip}>RNPA: {resultado.producto.rnpa}</div>
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(`✅ Producto APTO para celíacos según ANMAT\nMarca: ${resultado.producto.marca || '—'}\nNombre: ${resultado.producto.nombrefantasia && resultado.producto.nombrefantasia !== 'NO REGISTRA' ? resultado.producto.nombrefantasia : resultado.producto.denominacionventa || '—'}\nRNPA: ${resultado.producto.rnpa}\nVerificado en: verificador-sin-tacc.vercel.app`)}`}
+                target="_blank"
+                rel="noopener"
+                style={styles.botonWhatsapp}
+              >
+                📤 Compartir por WhatsApp
+              </a>
             </div>
           ) : (
             <div style={styles.noApto}>
@@ -259,7 +303,7 @@ const styles = {
     background: 'white', borderRadius: '20px', padding: '36px 32px',
     width: '100%', maxWidth: '460px', boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
   },
-  header: { textAlign: 'center', marginBottom: '28px' },
+  header: { textAlign: 'center', marginBottom: '28px', position: 'relative' },
   icono: { fontSize: '48px', marginBottom: '8px' },
   titulo: { fontSize: '26px', fontWeight: '700', color: '#15803d', margin: '0 0 6px 0' },
   subtitulo: { fontSize: '14px', color: '#6b7280', margin: '0 0 20px 0' },
@@ -269,7 +313,7 @@ const styles = {
     border: '2px solid #d1fae5', borderRadius: '12px',
     outline: 'none', boxSizing: 'border-box',
     marginBottom: '10px', textAlign: 'center',
-    color: '#111827', background: 'white',
+    color: 'white', background: '#1f2937', fontWeight: '700',
   },
   botonVerificar: {
     width: '100%', padding: '16px', fontSize: '18px', fontWeight: '700',
@@ -355,7 +399,39 @@ const styles = {
   label: { fontSize: '13px', fontWeight: '600', color: '#6b7280', minWidth: '60px' },
   valor: { fontSize: '14px', color: '#111827', textAlign: 'right' },
   rnpaChip: { marginTop: '14px', fontSize: '12px', color: '#6b7280', textAlign: 'center', fontFamily: 'monospace' },
-  noApto: {
+  botonInfo: {
+    position: 'absolute', top: '16px', right: '16px',
+    background: 'none', border: 'none', fontSize: '22px',
+    cursor: 'pointer', padding: '4px',
+  },
+  modalOverlay: {
+    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+    background: 'rgba(0,0,0,0.5)', display: 'flex',
+    alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px',
+  },
+  modal: {
+    background: 'white', borderRadius: '16px', padding: '28px',
+    width: '100%', maxWidth: '400px', boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+  },
+  modalTitulo: { fontSize: '20px', fontWeight: '700', color: '#15803d', margin: '0 0 16px 0' },
+  modalTexto: { fontSize: '14px', color: '#4b5563', marginBottom: '16px', lineHeight: '1.5' },
+  modalFila: {
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+    padding: '10px 0', borderBottom: '1px solid #f3f4f6',
+  },
+  modalLabel: { fontSize: '13px', fontWeight: '600', color: '#6b7280' },
+  modalValor: { fontSize: '13px', color: '#111827' },
+  modalLink: { fontSize: '13px', color: '#2563eb', textDecoration: 'none' },
+  modalCerrar: {
+    width: '100%', marginTop: '20px', padding: '12px',
+    background: '#16a34a', color: 'white', border: 'none',
+    borderRadius: '10px', fontSize: '15px', fontWeight: '600', cursor: 'pointer',
+  },
+    display: 'block', marginTop: '14px', padding: '12px',
+    background: '#25d366', color: 'white', borderRadius: '10px',
+    textAlign: 'center', fontWeight: '600', fontSize: '14px',
+    textDecoration: 'none',
+  },
     background: '#fff1f2', border: '2px solid #fecdd3',
     borderRadius: '14px', padding: '20px', marginBottom: '16px', textAlign: 'center',
   },
