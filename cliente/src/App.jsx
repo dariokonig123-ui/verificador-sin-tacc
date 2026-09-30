@@ -281,7 +281,7 @@ const s = {
     width: '100%', maxWidth: '460px', boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
   },
   header: { textAlign: 'center', marginBottom: '28px', position: 'relative' },
-  logoSinTacc: { height: '64px', marginBottom: '8px' },
+  logoSinTacc: { height: '128px', marginBottom: '16px' },
   titulo: { fontSize: '26px', fontWeight: '700', color: '#15803d', margin: '0 0 6px 0' },
   subtitulo: { fontSize: '14px', color: '#6b7280', margin: '0 0 4px 0' },
   botonInfo: {
