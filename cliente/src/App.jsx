@@ -114,7 +114,7 @@ export default function App() {
         {/* Header */}
         <div style={s.header}>
           <img
-            src="https://listadoalg.anmat.gob.ar/Content/Images/logo-sin-tacc.png"
+            src="/logo-sin-tacc.png"
             alt="Sin TACC"
             style={s.logoSinTacc}
             onError={e => { e.target.style.display = 'none' }}
