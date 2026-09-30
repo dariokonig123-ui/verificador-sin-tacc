@@ -3,6 +3,7 @@ import { createWorker } from 'tesseract.js'
 
 const API = 'https://verificador-sin-tacc.onrender.com'
 
+
 export default function App() {
   const [rnpa, setRnpa] = useState('')
   const [resultado, setResultado] = useState(null)
