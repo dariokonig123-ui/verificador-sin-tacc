@@ -153,6 +153,7 @@ export default function App() {
           </div>
         )}
 
+
         {/* Modo cámara */}
         {modoCamera ? (
           <div>
