@@ -12,8 +12,9 @@ const HOJA_NOMBRE = 'Hoja 1';
 const PORT = process.env.PORT || 3001;
 // ─────────────────────────────────────────────────────────────
 
-let cache = [];      // productos en memoria
-let headers = [];    // nombres de columnas
+let cache = [];
+let headers = [];
+let fechaActualizacion = '';
 
 const normalizar = (str) => (str || '').replace(/[-\/\s]/g, '').toLowerCase();
 
@@ -38,6 +39,15 @@ async function cargarCache() {
   }
 
   headers = filas[0].map(h => h.trim().toLowerCase());
+
+  // La última columna de la primera fila puede tener la fecha
+  // Si no, usamos la fecha de hoy
+  const hoy = new Date()
+  const dia = String(hoy.getDate()).padStart(2, '0')
+  const mes = String(hoy.getMonth() + 1).padStart(2, '0')
+  const anio = hoy.getFullYear()
+  fechaActualizacion = `${dia}/${mes}/${anio}`
+
   cache = filas.slice(1).map(fila => {
     const obj = {};
     headers.forEach((h, i) => { obj[h] = fila[i] || ''; });
@@ -79,9 +89,9 @@ app.get('/buscar', (req, res) => {
   }
 });
 
-// GET /estado — para saber si el server está vivo
+// GET /estado
 app.get('/estado', (req, res) => {
-  res.json({ ok: true, productos: cache.length });
+  res.json({ ok: true, productos: cache.length, fecha: fechaActualizacion });
 });
 
 // ─── INICIO ──────────────────────────────────────────────────
