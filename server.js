@@ -42,7 +42,7 @@ async function cargarCache() {
 
   // La última columna de la primera fila puede tener la fecha
   // Si no, usamos la fecha de hoy
-  const hoy = new Date(new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }))
+  const hoy = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires' }))
   const dia = String(hoy.getDate()).padStart(2, '0')
   const mes = String(hoy.getMonth() + 1).padStart(2, '0')
   const anio = hoy.getFullYear()
