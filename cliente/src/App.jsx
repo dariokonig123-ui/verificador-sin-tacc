@@ -1,8 +1,7 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createWorker } from 'tesseract.js'
 
 const API = 'https://verificador-sin-tacc.onrender.com'
-
 
 export default function App() {
   const [rnpa, setRnpa] = useState('')
@@ -15,7 +14,14 @@ export default function App() {
   const [despertando, setDespertando] = useState(false)
   const [mostrarAcerca, setMostrarAcerca] = useState(false)
 
-  const videoRef = useRef(null)
+  const [fecha, setFecha] = useState('')
+
+  useEffect(() => {
+    fetch(`${API}/estado`)
+      .then(r => r.json())
+      .then(d => setFecha(d.fecha))
+      .catch(() => {})
+  }, [])
   const streamRef = useRef(null)
 
   const buscar = async (rnpaABuscar) => {
@@ -114,7 +120,7 @@ export default function App() {
         {/* Header */}
         <div style={s.header}>
           <img
-            src="/logo-sin-tacc.png"
+            src="https://listadoalg.anmat.gob.ar/Content/Images/logo-sin-tacc.png"
             alt="Sin TACC"
             style={s.logoSinTacc}
             onError={e => { e.target.style.display = 'none' }}
@@ -152,7 +158,6 @@ export default function App() {
             </div>
           </div>
         )}
-
 
         {/* Modo cámara */}
         {modoCamera ? (
@@ -260,7 +265,7 @@ export default function App() {
 
         {/* Footer */}
         <p style={s.footer}>
-          Datos oficiales ANMAT · Actualizado 27/09/2026<br />
+          Datos oficiales ANMAT · Actualizado {fecha || '...'}<br />
           <span style={{fontSize:'10px', color:'#9ca3af'}}>3HK división software</span>
         </p>
 
@@ -281,7 +286,7 @@ const s = {
     width: '100%', maxWidth: '460px', boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
   },
   header: { textAlign: 'center', marginBottom: '28px', position: 'relative' },
-  logoSinTacc: { height: '128px', marginBottom: '16px' },
+  logoSinTacc: { height: '64px', marginBottom: '8px' },
   titulo: { fontSize: '26px', fontWeight: '700', color: '#15803d', margin: '0 0 6px 0' },
   subtitulo: { fontSize: '14px', color: '#6b7280', margin: '0 0 4px 0' },
   botonInfo: {
