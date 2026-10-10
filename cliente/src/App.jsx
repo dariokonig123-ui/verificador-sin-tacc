@@ -410,16 +410,17 @@ const s = {
     background: '#25d366', color: 'white', borderRadius: '10px',
     textAlign: 'center', fontWeight: '600', fontSize: '14px', textDecoration: 'none',
   },
-  botonMP: {
-    display: 'inline-block', padding: '12px 24px',
-    background: '#009ee3', color: 'white', borderRadius: '10px',
-    fontWeight: '600', fontSize: '15px', textDecoration: 'none',
-  },
+  noApto: {
     background: '#fff1f2', border: '2px solid #fecdd3',
     borderRadius: '14px', padding: '20px', marginBottom: '16px', textAlign: 'center',
   },
   noAptoBadge: { fontSize: '15px', fontWeight: '700', color: '#be123c', marginBottom: '12px', letterSpacing: '0.5px' },
   noAptoTexto: { fontSize: '14px', color: '#374151', margin: '0 0 8px 0' },
   noAptoSub: { fontSize: '12px', color: '#6b7280', margin: 0 },
+  botonMP: {
+    display: 'inline-block', padding: '12px 24px',
+    background: '#009ee3', color: 'white', borderRadius: '10px',
+    fontWeight: '600', fontSize: '15px', textDecoration: 'none',
+  },
   footer: { textAlign: 'center', fontSize: '11px', color: '#6b7280', marginTop: '20px', marginBottom: 0 },
 }
