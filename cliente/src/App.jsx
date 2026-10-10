@@ -13,8 +13,10 @@ export default function App() {
   const [rnpaDetectado, setRnpaDetectado] = useState(null)
   const [despertando, setDespertando] = useState(false)
   const [mostrarAcerca, setMostrarAcerca] = useState(false)
-
   const [fecha, setFecha] = useState('')
+
+  const videoRef = useRef(null)
+  const streamRef = useRef(null)
 
   useEffect(() => {
     fetch(`${API}/estado`)
@@ -22,7 +24,6 @@ export default function App() {
       .then(d => setFecha(d.fecha))
       .catch(() => {})
   }, [])
-  const streamRef = useRef(null)
 
   const buscar = async (rnpaABuscar) => {
     const rnpaLimpio = (rnpaABuscar || rnpa).trim()
@@ -56,11 +57,8 @@ export default function App() {
       setModoCamera(true)
       setTimeout(() => {
         if (videoRef.current) {
-          setError(`DEBUG: video encontrado, tracks: ${stream.getVideoTracks().length}`)
           videoRef.current.srcObject = stream
-          videoRef.current.play().catch(e => setError(`DEBUG play error: ${e.message}`))
-        } else {
-          setError('DEBUG: videoRef.current es null')
+          videoRef.current.play().catch(() => {})
         }
       }, 600)
     } catch (e) {
@@ -123,7 +121,7 @@ export default function App() {
         {/* Header */}
         <div style={s.header}>
           <img
-            src="https://listadoalg.anmat.gob.ar/Content/Images/logo-sin-tacc.png"
+            src="/logo-sin-tacc.png"
             alt="Sin TACC"
             style={s.logoSinTacc}
             onError={e => { e.target.style.display = 'none' }}
@@ -252,17 +250,13 @@ export default function App() {
           )
         )}
 
-        {/* Cafecito */}
+        {/* Mercado Pago */}
         <div style={{textAlign:'center', margin:'16px 0 8px 0'}}>
           <p style={{fontSize:'13px', color:'#6b7280', marginBottom:'10px'}}>
             Esta app es gratuita y la mantenemos con mucho café ☕ Si te ayudó en el super, convidanos uno 👇
           </p>
-          <a href='https://cafecito.app/el_yo_ella' rel='noopener' target='_blank'>
-            <img
-              srcSet='https://cdn.cafecito.app/imgs/buttons/button_1.png 1x, https://cdn.cafecito.app/imgs/buttons/button_1_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_1_3.75x.png 3.75x'
-              src='https://cdn.cafecito.app/imgs/buttons/button_1.png'
-              alt='Invitame un café en cafecito.app'
-            />
+          <a href='https://link.mercadopago.com.ar/verificadorsintacc' rel='noopener' target='_blank' style={s.botonMP}>
+            💙 Donar con Mercado Pago
           </a>
         </div>
 
@@ -289,7 +283,7 @@ const s = {
     width: '100%', maxWidth: '460px', boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
   },
   header: { textAlign: 'center', marginBottom: '28px', position: 'relative' },
-  logoSinTacc: { height: '64px', marginBottom: '8px' },
+  logoSinTacc: { height: '100px', marginBottom: '8px' },
   titulo: { fontSize: '26px', fontWeight: '700', color: '#15803d', margin: '0 0 6px 0' },
   subtitulo: { fontSize: '14px', color: '#6b7280', margin: '0 0 4px 0' },
   botonInfo: {
@@ -416,7 +410,11 @@ const s = {
     background: '#25d366', color: 'white', borderRadius: '10px',
     textAlign: 'center', fontWeight: '600', fontSize: '14px', textDecoration: 'none',
   },
-  noApto: {
+  botonMP: {
+    display: 'inline-block', padding: '12px 24px',
+    background: '#009ee3', color: 'white', borderRadius: '10px',
+    fontWeight: '600', fontSize: '15px', textDecoration: 'none',
+  },
     background: '#fff1f2', border: '2px solid #fecdd3',
     borderRadius: '14px', padding: '20px', marginBottom: '16px', textAlign: 'center',
   },
