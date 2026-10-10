@@ -56,8 +56,11 @@ export default function App() {
       setModoCamera(true)
       setTimeout(() => {
         if (videoRef.current) {
+          setError(`DEBUG: video encontrado, tracks: ${stream.getVideoTracks().length}`)
           videoRef.current.srcObject = stream
-          videoRef.current.play().catch(() => {})
+          videoRef.current.play().catch(e => setError(`DEBUG play error: ${e.message}`))
+        } else {
+          setError('DEBUG: videoRef.current es null')
         }
       }, 600)
     } catch (e) {
