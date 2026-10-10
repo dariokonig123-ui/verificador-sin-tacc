@@ -50,16 +50,16 @@ export default function App() {
     setRnpaDetectado(null)
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }
+        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }
       })
+      streamRef.current = stream
       setModoCamera(true)
       setTimeout(() => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream
           videoRef.current.play().catch(() => {})
         }
-        streamRef.current = stream
-      }, 300)
+      }, 600)
     } catch (e) {
       setError(`No se pudo acceder a la cámara: ${e.message}`)
     }
@@ -120,7 +120,7 @@ export default function App() {
         {/* Header */}
         <div style={s.header}>
           <img
-            src="/logo-sin-tacc.png"
+            src="https://listadoalg.anmat.gob.ar/Content/Images/logo-sin-tacc.png"
             alt="Sin TACC"
             style={s.logoSinTacc}
             onError={e => { e.target.style.display = 'none' }}
