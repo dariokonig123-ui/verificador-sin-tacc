@@ -38,15 +38,19 @@ async function cargarCache() {
     return;
   }
 
-  headers = filas[0].map(h => h.trim().toLowerCase());
+  // Leer fecha de actualización desde hoja Config
+  const config = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: 'Config!A1:B1',
+  });
+  const filasConfig = config.data.values;
+  if (filasConfig && filasConfig[0] && filasConfig[0][1]) {
+    fechaActualizacion = filasConfig[0][1];
+  } else {
+    fechaActualizacion = 'sin fecha';
+  }
 
-  // La última columna de la primera fila puede tener la fecha
-  // Si no, usamos la fecha de hoy
-  const hoy = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires' }))
-  const dia = String(hoy.getDate()).padStart(2, '0')
-  const mes = String(hoy.getMonth() + 1).padStart(2, '0')
-  const anio = hoy.getFullYear()
-  fechaActualizacion = `${dia}/${mes}/${anio}`
+  headers = filas[0].map(h => h.trim().toLowerCase());
 
   cache = filas.slice(1).map(fila => {
     const obj = {};
